@@ -1,0 +1,3037 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>כושר ביתי — מסלול שבועי</title>
+
+<!-- PWA support -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f2a24">
+<meta name="description" content="מסלול אימונים ביתי יומי עם הליכון חשמלי, מותאם לגיל 60+">
+
+<!-- iOS support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="כושר בבית">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<!-- Android/Chrome support -->
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f4efe6;
+    --cream-dark: #ebe3d4;
+    --ink: #1f2a24;
+    --moss: #3d5a42;
+    --moss-dark: #2a4030;
+    --moss-light: #6b8a6f;
+    --terra: #c96f4a;
+    --terra-dark: #a85838;
+    --gold: #b8935a;
+    --muted: #7a7565;
+    --line: #d6cdbb;
+    --success: #4a7c59;
+    --shadow-sm: 0 1px 2px rgba(31,42,36,0.06);
+    --shadow-md: 0 4px 12px rgba(31,42,36,0.08);
+    --shadow-lg: 0 12px 32px rgba(31,42,36,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Heebo', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(61,90,66,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(201,111,74,0.04) 0%, transparent 40%);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 28px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-sub {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .brand-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 54px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-title span {
+    color: var(--moss);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .date-card {
+    text-align: left;
+    direction: rtl;
+  }
+
+  .date-today {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .date-greeting {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Dashboard */
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .stat {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .stat::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--moss);
+  }
+
+  .stat.accent::before { background: var(--terra); }
+  .stat.gold::before { background: var(--gold); }
+  .stat.treadmill::before { background: var(--moss-light); }
+
+  .stat-label {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .stat-unit {
+    font-size: 14px;
+    color: var(--muted);
+    margin-right: 6px;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 400;
+  }
+
+  .stat-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Week progress */
+  .week-progress {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .week-progress::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(201,111,74,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .week-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 24px;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .day-cell {
+    background: rgba(244,239,230,0.06);
+    border: 1px solid rgba(244,239,230,0.15);
+    border-radius: 10px;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .day-cell:not(.rest):hover {
+    background: rgba(244,239,230,0.12);
+    transform: translateY(-2px);
+  }
+
+  .day-cell.active {
+    background: var(--terra);
+    border-color: var(--terra);
+  }
+
+  .day-cell.done {
+    background: var(--moss-light);
+    border-color: var(--moss-light);
+  }
+
+  .day-cell.rest {
+    background: rgba(244,239,230,0.03);
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .day-name {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    font-weight: 500;
+  }
+
+  .day-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .day-status {
+    font-size: 10px;
+    margin-top: 4px;
+    opacity: 0.85;
+  }
+
+  /* Workout area */
+  .workout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .workout-title-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .workout-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra);
+    font-weight: 500;
+  }
+
+  .workout-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  .workout-meta {
+    display: flex;
+    gap: 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .workout-meta strong {
+    color: var(--ink);
+    font-weight: 700;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 18px;
+    margin-left: 4px;
+  }
+
+  /* Exercise table */
+  .exercise-table {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 40px;
+  }
+
+  .table-head {
+    display: grid;
+    grid-template-columns: 50px 2fr 0.8fr 0.8fr 60px 60px;
+    background: var(--cream-dark);
+    padding: 14px 20px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 50px 2fr 0.8fr 0.8fr 60px 60px;
+    padding: 18px 20px;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+
+  .demo-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #fff 0%, var(--cream) 100%);
+    border: 1.5px solid var(--line);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .demo-btn:hover {
+    background: var(--terra);
+    border-color: var(--terra);
+    transform: scale(1.08);
+    box-shadow: var(--shadow-md);
+  }
+
+  .demo-btn:hover svg { fill: #fff; }
+
+  .demo-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--terra);
+    transition: fill 0.2s;
+    margin-right: 2px;
+  }
+
+  .demo-btn::after {
+    content: "צפה בהדגמה";
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--ink);
+    color: var(--cream);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  .demo-btn:hover::after { opacity: 1; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(31,42,36,0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal {
+    background: var(--cream);
+    border-radius: 20px;
+    max-width: 640px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease-out;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(31,42,36,0.08);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--ink);
+    transition: all 0.2s;
+    z-index: 2;
+  }
+
+  .modal-close:hover {
+    background: rgba(31,42,36,0.15);
+    transform: scale(1.1);
+  }
+
+  .modal-hero {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--moss-dark) 100%);
+    padding: 32px 32px 24px;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .modal-hero::after {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(201,111,74,0.25) 0%, transparent 70%);
+  }
+
+  .modal-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .modal-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .modal-diagram {
+    background: #fff;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .modal-diagram svg {
+    max-width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+
+  .modal-body {
+    padding: 28px 32px;
+  }
+
+  .modal-section {
+    margin-bottom: 24px;
+  }
+
+  .modal-section:last-child { margin-bottom: 0; }
+
+  .modal-section-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--moss-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-section-title .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .modal-steps {
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .modal-steps li {
+    counter-increment: step;
+    padding: 10px 0 10px 44px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.6;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .modal-steps li:last-child { border-bottom: none; }
+
+  .modal-steps li::before {
+    content: counter(step);
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    background: var(--moss);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .modal-callout {
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .modal-callout.tip {
+    background: rgba(74,124,89,0.12);
+    border-right: 3px solid var(--success);
+  }
+
+  .modal-callout.warn {
+    background: rgba(201,111,74,0.12);
+    border-right: 3px solid var(--terra);
+  }
+
+  .modal-callout .emoji { font-size: 20px; }
+
+  .modal-youtube {
+    background: #fff;
+    padding: 20px 32px 28px;
+    border-top: 1px solid var(--line);
+  }
+
+  .yt-btn {
+    width: 100%;
+    background: #FF0000;
+    color: #fff;
+    border: none;
+    padding: 14px 20px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s;
+  }
+
+  .yt-btn:hover {
+    background: #cc0000;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .yt-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+  @media (max-width: 560px) {
+    .modal-hero { padding: 28px 24px 20px; }
+    .modal-title { font-size: 22px; }
+    .modal-body { padding: 24px 24px; }
+    .modal-youtube { padding: 16px 24px 24px; }
+  }
+
+  /* Tab Navigation */
+  .tabs {
+    display: flex;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 32px;
+    gap: 4px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .tab:hover {
+    background: var(--cream);
+    color: var(--ink);
+  }
+
+  .tab.active {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .tab svg { width: 18px; height: 18px; }
+
+  /* Notes */
+  .notes-section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-top: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .notes-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .notes-title .icon { font-size: 24px; }
+
+  .notes-input {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--cream);
+    resize: vertical;
+    transition: border 0.2s, background 0.2s;
+    direction: rtl;
+  }
+
+  .notes-input:focus {
+    outline: none;
+    border-color: var(--moss);
+    background: #fff;
+  }
+
+  .notes-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+    height: 16px;
+  }
+
+  .notes-status.saved { color: var(--success); }
+
+  /* Progress view */
+  .progress-section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .progress-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .progress-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--cream-dark);
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  .progress-toggle button {
+    background: transparent;
+    border: none;
+    padding: 8px 14px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .progress-toggle button.active {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .chart-container {
+    width: 100%;
+    height: 280px;
+    overflow: visible;
+  }
+
+  .chart-svg { width: 100%; height: 100%; }
+
+  .chart-bar {
+    fill: var(--moss);
+    transition: fill 0.2s, opacity 0.2s;
+    cursor: pointer;
+  }
+
+  .chart-bar:hover { fill: var(--terra); }
+
+  .chart-bar.current {
+    fill: var(--terra);
+  }
+
+  .chart-label {
+    font-family: 'Heebo', sans-serif;
+    font-size: 11px;
+    fill: var(--muted);
+  }
+
+  .chart-value {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--ink);
+  }
+
+  .chart-grid {
+    stroke: var(--line);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .progress-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .summary-item {
+    text-align: center;
+  }
+
+  .summary-value {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--moss-dark);
+    line-height: 1;
+  }
+
+  .summary-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  /* History entries */
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .history-entry {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 16px 20px;
+    border-right: 3px solid var(--moss);
+  }
+
+  .history-date {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .history-note {
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .history-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+
+  /* Settings */
+  .settings-section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .settings-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .settings-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .setting-label {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .setting-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Toggle switch */
+  .toggle {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    cursor: pointer;
+  }
+
+  .toggle input {
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--line);
+    border-radius: 20px;
+    transition: background 0.2s;
+  }
+
+  .toggle-slider::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+
+  .toggle input:checked + .toggle-slider {
+    background: var(--moss);
+  }
+
+  .toggle input:checked + .toggle-slider::after {
+    transform: translateX(-22px);
+  }
+
+  .time-input {
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--cream);
+    color: var(--ink);
+    direction: ltr;
+  }
+
+  .time-input:focus {
+    outline: none;
+    border-color: var(--moss);
+  }
+
+  .test-btn {
+    background: var(--terra);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .test-btn:hover {
+    background: var(--terra-dark);
+    transform: translateY(-1px);
+  }
+
+  .perm-status {
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-top: 12px;
+  }
+
+  .perm-status.granted {
+    background: rgba(74,124,89,0.12);
+    color: var(--moss-dark);
+    border-right: 3px solid var(--success);
+  }
+
+  .perm-status.denied {
+    background: rgba(201,111,74,0.12);
+    color: var(--terra-dark);
+    border-right: 3px solid var(--terra);
+  }
+
+  .perm-status.prompt {
+    background: var(--cream-dark);
+    color: var(--ink);
+  }
+
+  .table-row:last-child { border-bottom: none; }
+
+  .table-row:hover { background: var(--cream); }
+
+  .table-row.done {
+    background: rgba(74,124,89,0.08);
+  }
+
+  .table-row.done .ex-name {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .ex-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .ex-name {
+    font-weight: 500;
+    font-size: 17px;
+  }
+
+  .ex-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .treadmill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--moss) 0%, var(--moss-dark) 100%);
+    color: var(--cream);
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    margin-top: 6px;
+    margin-bottom: 2px;
+  }
+
+  .treadmill-badge svg {
+    width: 12px;
+    height: 12px;
+    fill: var(--cream);
+  }
+
+  .treadmill-badge span { font-family: 'Frank Ruhl Libre', serif; font-weight: 600; }
+
+  .ex-cell {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--moss-dark);
+  }
+
+  .check-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-right: auto;
+  }
+
+  .check-btn:hover {
+    border-color: var(--moss);
+    transform: scale(1.08);
+  }
+
+  .check-btn.checked {
+    background: var(--moss);
+    border-color: var(--moss);
+  }
+
+  .check-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: #fff;
+    stroke-width: 3;
+    fill: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .check-btn.checked svg { opacity: 1; }
+
+  /* Tips box */
+  .tips {
+    background: linear-gradient(135deg, #fff 0%, var(--cream-dark) 100%);
+    border-right: 4px solid var(--gold);
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+  }
+
+  .tips-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--moss-dark);
+  }
+
+  .tips-body {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* Rest day view */
+  .rest-view {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+  }
+
+  .rest-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .rest-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .rest-body {
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Complete button */
+  .complete-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    padding: 20px 24px;
+    background: var(--cream-dark);
+    border-radius: 12px;
+  }
+
+  .complete-status {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .complete-btn {
+    background: var(--terra);
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .complete-btn:hover {
+    background: var(--terra-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .complete-btn:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .complete-btn.done {
+    background: var(--moss);
+  }
+
+  /* Reset link */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .reset-link {
+    color: var(--muted);
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    margin-right: 12px;
+  }
+
+  .reset-link:hover { color: var(--terra); }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .container { padding: 20px 16px 60px; }
+    .table-head { display: none; }
+    .table-row {
+      grid-template-columns: 40px 1fr 44px 44px;
+      grid-template-areas:
+        "num name demo check"
+        "num meta demo check";
+      gap: 4px 10px;
+      padding: 16px;
+    }
+    .ex-num { grid-area: num; font-size: 24px; }
+    .ex-name-wrap { grid-area: name; }
+    .ex-meta-mobile {
+      grid-area: meta;
+      display: flex;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Frank Ruhl Libre', serif;
+    }
+    .demo-btn { grid-area: demo; width: 40px; height: 40px; }
+    .check-btn { grid-area: check; width: 40px; height: 40px; }
+    .ex-cell.desktop-only { display: none; }
+    .day-cell { padding: 10px 4px; }
+    .day-name { font-size: 9px; }
+    .day-num { font-size: 18px; }
+    .day-status { font-size: 9px; }
+    .demo-btn::after { display: none; }
+  }
+
+  /* Loading */
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="app">
+  <div class="loading">טוען את המסלול שלך…</div>
+</div>
+
+<script>
+// ============ DATA ============
+const HEBREW_DAYS = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+const HEBREW_DAYS_SHORT = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
+
+// ============ EXERCISE GUIDES ============
+// Detailed written guides with SVG diagrams for each exercise
+const EXERCISE_GUIDES = {
+  "חימום על הליכון": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="40" y="140" width="200" height="18" rx="3" fill="#3d5a42" opacity="0.15"/>
+      <rect x="40" y="135" width="200" height="8" rx="2" fill="#3d5a42"/>
+      <g stroke="#1f2a24" stroke-width="2.5" stroke-linecap="round" fill="none"><rect x="210" y="85" width="28" height="50" fill="#3d5a42" fill-opacity="0.25" stroke="#3d5a42"/><line x1="215" y1="95" x2="233" y2="95" stroke="#c96f4a" stroke-width="2"/><line x1="215" y1="102" x2="230" y2="102" stroke="#c96f4a" stroke-width="2"/></g>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="130" cy="50" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="130" y1="63" x2="130" y2="110"/>
+        <line x1="130" y1="75" x2="155" y2="95"/>
+        <line x1="130" y1="75" x2="110" y2="100"/>
+        <line x1="130" y1="110" x2="148" y2="135"/>
+        <line x1="130" y1="110" x2="115" y2="135"/>
+      </g>
+      <path d="M 60 120 L 95 120" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr1)"/>
+      <defs><marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עלה בזהירות על ההליכון, אחוז בידיות לתמיכה",
+      "התחל במהירות נמוכה (1.5–2 קמ\"ש) לכמה שניות",
+      "העלה הדרגתית למהירות היעד (3.0–3.5 קמ\"ש)",
+      "הרפה את האחיזה בידיות ברגע שאתה יציב",
+      "שמור על יציבה זקופה, מבט קדימה, כתפיים רפויות",
+      "נשום רגיל — אתה אמור להיות מסוגל לנהל שיחה",
+    ],
+    tip: "החימום קריטי לאחר גיל 60 — הוא מונע פציעות ומכין את הלב לעומס.",
+    warn: "אל תקפוץ ישר למהירות גבוהה. אם מרגיש סחרחורת — עצור מיד.",
+  },
+
+  "שכיבות סמיכה לקיר": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="240" y1="20" x2="240" y2="170" stroke="#1f2a24" stroke-width="3"/>
+      <pattern id="wall" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#1f2a24" stroke-width="0.5" opacity="0.3"/></pattern>
+      <rect x="240" y="20" width="40" height="150" fill="url(#wall)"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="140" cy="55" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="140" y1="68" x2="170" y2="130"/>
+        <line x1="155" y1="95" x2="195" y2="80"/>
+        <line x1="155" y1="95" x2="195" y2="105"/>
+        <line x1="195" y1="80" x2="235" y2="75"/>
+        <line x1="195" y1="105" x2="235" y2="105"/>
+        <line x1="170" y1="130" x2="155" y2="160"/>
+        <line x1="170" y1="130" x2="185" y2="160"/>
+      </g>
+      <path d="M 120 90 L 95 90" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr2)"/>
+      <path d="M 95 110 L 120 110" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr2)"/>
+      <defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עמוד מול הקיר במרחק של זרוע פשוטה",
+      "הנח את כפות הידיים על הקיר בגובה הכתפיים",
+      "המרחק בין הידיים = רוחב כתפיים",
+      "כופף מרפקים לאט ובשליטה, קרב את החזה אל הקיר",
+      "שמור על גוף ישר מהראש עד הרגליים",
+      "דחוף חזרה לעמידה זקופה",
+    ],
+    tip: "ככל שהרגליים רחוקות יותר מהקיר, התרגיל קשה יותר. התחל קרוב.",
+    warn: "אל תכופף את הגב התחתון. שמור על קו ישר כל הזמן.",
+  },
+
+  "חתירה עם גומייה": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="110" y="110" width="60" height="50" rx="2" fill="#3d5a42" fill-opacity="0.15" stroke="#3d5a42" stroke-width="2"/>
+      <line x1="110" y1="110" x2="110" y2="160" stroke="#3d5a42" stroke-width="2.5"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="140" cy="50" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="140" y1="63" x2="140" y2="115"/>
+        <line x1="140" y1="80" x2="180" y2="90"/>
+        <line x1="180" y1="90" x2="220" y2="130"/>
+        <line x1="140" y1="115" x2="200" y2="145"/>
+        <line x1="200" y1="145" x2="235" y2="155"/>
+      </g>
+      <path d="M 225 120 Q 210 125 215 140" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <path d="M 175 90 L 145 75" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr3)"/>
+      <defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "שב על כיסא עם גב ישר, רגליים פשוטות קדימה",
+      "כרוך את הגומייה סביב כפות הרגליים",
+      "אחוז בקצוות הגומייה עם שתי הידיים, זרועות פשוטות",
+      "משוך את הידיים לעבר הבטן, מרפקים צמודים לגוף",
+      "תוך כדי משיכה — לחץ את השכמות אחורה",
+      "שחרר לאט חזרה לתנוחת ההתחלה",
+    ],
+    tip: "חשוב יותר לבצע לאט ונכון מאשר מהר. הרגש את השרירים בגב עובדים.",
+    warn: "אל תמשוך בכוח עם הצוואר או הכתפיים. התנועה מגיעה מהגב.",
+  },
+
+  "הרמת כתפיים": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="150" cy="55" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="150" y1="68" x2="150" y2="120"/>
+        <line x1="150" y1="78" x2="115" y2="40"/>
+        <line x1="150" y1="78" x2="185" y2="40"/>
+        <line x1="150" y1="120" x2="130" y2="165"/>
+        <line x1="150" y1="120" x2="170" y2="165"/>
+      </g>
+      <rect x="105" y="30" width="20" height="12" rx="2" fill="#3d5a42" opacity="0.7"/>
+      <rect x="175" y="30" width="20" height="12" rx="2" fill="#3d5a42" opacity="0.7"/>
+      <path d="M 90 75 L 90 45" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr4)"/>
+      <path d="M 210 75 L 210 45" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr4)"/>
+      <defs><marker id="arr4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עמוד זקוף או שב על כיסא עם גב תומך",
+      "אחוז משקולת (1–2 ק\"ג) או בקבוק מים בכל יד",
+      "הרם את המשקולות לגובה הכתפיים, מרפקים כפופים",
+      "דחוף את המשקולות למעלה עד שהזרועות פשוטות",
+      "הורד לאט בחזרה לגובה הכתפיים",
+      "שמור על בטן אסופה וגב יציב לאורך התנועה",
+    ],
+    tip: "אם כואב בכתף — הורד את המשקל או החלף לתרגיל אחר.",
+    warn: "אל תקמר את הגב התחתון. אם אתה מרים יותר מדי משקל — הגוף יפצה.",
+  },
+
+  "כיפוף מרפקים": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="150" cy="45" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="150" y1="58" x2="150" y2="115"/>
+        <line x1="150" y1="72" x2="120" y2="100"/>
+        <line x1="120" y1="100" x2="135" y2="65"/>
+        <line x1="150" y1="72" x2="180" y2="100"/>
+        <line x1="180" y1="100" x2="165" y2="65"/>
+        <line x1="150" y1="115" x2="130" y2="165"/>
+        <line x1="150" y1="115" x2="170" y2="165"/>
+      </g>
+      <rect x="128" y="57" width="14" height="18" rx="2" fill="#3d5a42" opacity="0.7"/>
+      <rect x="158" y="57" width="14" height="18" rx="2" fill="#3d5a42" opacity="0.7"/>
+      <path d="M 98 95 Q 90 80 105 70" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr5)"/>
+      <path d="M 202 95 Q 210 80 195 70" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr5)"/>
+      <defs><marker id="arr5" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עמוד זקוף, כפות רגליים ברוחב אגן",
+      "אחוז משקולת בכל יד (1–2 ק\"ג), כפות ידיים פונות קדימה",
+      "זרועות צמודות לגוף, מרפקים יציבים במקום",
+      "כופף את המרפקים והעלה את המשקולות לכיוון הכתפיים",
+      "החזק לרגע בקצה העליון, לחץ את שרירי הזרוע",
+      "הורד לאט בחזרה לזרועות פשוטות",
+    ],
+    tip: "סוד התרגיל — המרפקים לא זזים. רק האמה עולה ויורדת.",
+    warn: "אל תנדנד את הגוף כדי 'לעזור' למשקולות לעלות.",
+  },
+
+  "מתיחות כתפיים וצוואר": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="130" cy="55" r="14" fill="#1f2a24" fill-opacity="0.1" transform="rotate(-20 130 55)"/>
+        <line x1="130" y1="69" x2="130" y2="125"/>
+        <line x1="130" y1="80" x2="105" y2="105"/>
+        <line x1="130" y1="80" x2="160" y2="100"/>
+        <line x1="130" y1="125" x2="115" y2="165"/>
+        <line x1="130" y1="125" x2="145" y2="165"/>
+      </g>
+      <path d="M 115 35 Q 95 55 115 75" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <path d="M 160 55 Q 185 40 185 20" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr6)"/>
+      <text x="200" y="30" font-family="Heebo" font-size="11" fill="#c96f4a">הטיה</text>
+      <defs><marker id="arr6" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "שב או עמוד זקוף, כתפיים רפויות",
+      "הטה ראש לאט שמאלה — אוזן לכיוון הכתף (15 שניות)",
+      "חזור למרכז, הטה ימינה (15 שניות)",
+      "סובב ראש לאט במעגל — 3 פעמים לכל כיוון",
+      "הרם כתפיים למעלה, החזק 2 שניות, שחרר",
+      "חזור 5 פעמים על הרמת כתפיים",
+    ],
+    tip: "המתיחות צריכות להיות עדינות — 'מרגיש נעים', לא כואב.",
+    warn: "אל תסובב ראש מהר. תנועות חדות יכולות לגרום לסחרחורת.",
+  },
+
+  "הליכה בקצב בינוני": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="40" y="140" width="200" height="18" rx="3" fill="#3d5a42" opacity="0.15"/>
+      <rect x="40" y="135" width="200" height="8" rx="2" fill="#3d5a42"/>
+      <rect x="210" y="70" width="30" height="65" fill="#3d5a42" fill-opacity="0.25" stroke="#3d5a42" stroke-width="2"/>
+      <text x="225" y="95" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="14" font-weight="700" fill="#c96f4a">4.5</text>
+      <text x="225" y="110" text-anchor="middle" font-family="Heebo" font-size="8" fill="#3d5a42">קמ"ש</text>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="120" cy="45" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="120" y1="57" x2="125" y2="105"/>
+        <line x1="122" y1="70" x2="150" y2="90"/>
+        <line x1="122" y1="70" x2="100" y2="95"/>
+        <line x1="125" y1="105" x2="145" y2="128"/>
+        <line x1="125" y1="105" x2="108" y2="128"/>
+      </g>
+      <path d="M 60 115 L 100 115" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr7)"/>
+      <path d="M 60 125 L 85 125" stroke="#c96f4a" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#arr7)" opacity="0.6"/>
+      <defs><marker id="arr7" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "לאחר חימום, העלה בהדרגה את המהירות ל-4.5 קמ\"ש",
+      "הוסף שיפוע קל של 1% כדי לדמות הליכה בחוץ",
+      "תנועת ידיים טבעית — הידיים נעות קדימה-אחורה בכפוף במרפקים",
+      "צעדים נינוחים ורגילים, לא מוגזמים",
+      "מבט קדימה, לא למטה לרגליים",
+      "שמור על הקצב 20 דקות ברציפות",
+    ],
+    tip: "'מבחן השיחה' — אתה אמור להיות מסוגל לדבר במשפטים קצרים בלי קוצר נשימה חמור.",
+    warn: "אם מרגיש כאב בחזה, סחרחורת או קוצר נשימה חמור — עצור מיד והתייעץ עם רופא.",
+  },
+
+  "הליכה בשיפוע קל": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <polygon points="40,140 240,140 240,110 40,140" fill="#3d5a42" opacity="0.25"/>
+      <line x1="40" y1="140" x2="240" y2="110" stroke="#3d5a42" stroke-width="3"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="140" cy="50" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="140" y1="62" x2="148" y2="110"/>
+        <line x1="142" y1="75" x2="170" y2="90"/>
+        <line x1="142" y1="75" x2="118" y2="95"/>
+        <line x1="148" y1="110" x2="168" y2="128"/>
+        <line x1="148" y1="110" x2="128" y2="128"/>
+      </g>
+      <text x="210" y="130" font-family="Frank Ruhl Libre" font-size="16" font-weight="700" fill="#c96f4a">3%</text>
+      <path d="M 60 155 L 95 148" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr8)"/>
+      <defs><marker id="arr8" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "הורד מהירות ל-4.0 קמ\"ש",
+      "העלה את השיפוע ל-3% (מדמה עלייה קלה)",
+      "צעדים קצרים יותר, דחיפה חזקה יותר מהרגל",
+      "שמור על יציבה זקופה — אל תטה את הגוף קדימה",
+      "נשימה עמוקה יותר, אבל עדיין בשליטה",
+      "5 דקות בלבד — זהו אתגר, לא נורמה",
+    ],
+    tip: "הליכה בשיפוע מחזקת ישבן ושוקיים ושורפת יותר קלוריות.",
+    warn: "אל תחזיק בידיות חזק מדי — זה מפחית את המאמץ ומפחית את היתרונות.",
+  },
+
+  "הרגעה על הליכון": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="40" y="140" width="200" height="18" rx="3" fill="#3d5a42" opacity="0.15"/>
+      <rect x="40" y="135" width="200" height="8" rx="2" fill="#3d5a42"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="140" cy="55" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="140" y1="67" x2="140" y2="115"/>
+        <line x1="140" y1="80" x2="165" y2="100"/>
+        <line x1="140" y1="80" x2="118" y2="105"/>
+        <line x1="140" y1="115" x2="155" y2="135"/>
+        <line x1="140" y1="115" x2="125" y2="135"/>
+      </g>
+      <path d="M 180 125 Q 175 110 160 115" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <text x="180" y="100" font-family="Heebo" font-size="11" fill="#c96f4a">האטה הדרגתית</text>
+    </svg>`,
+    steps: [
+      "הורד מהירות ל-3.0 קמ\"ש",
+      "החזר את השיפוע ל-0%",
+      "הרפה כתפיים וזרועות, נשום עמוק",
+      "הרגש את הדופק יורד בהדרגה",
+      "הזז את הראש מעט בעדינות, שחרר מתחים",
+      "5 דקות מלאות של הליכה איטית",
+    ],
+    tip: "ההרגעה הדרגתית מונעת סחרחורת ומעבר פתאומי בלחץ דם.",
+    warn: "אל תעצור את ההליכון פתאום. תמיד צא בעדינות.",
+  },
+
+  "מתיחות רגליים": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="130" cy="70" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="130" y1="83" x2="150" y2="125"/>
+        <line x1="140" y1="100" x2="170" y2="120"/>
+        <line x1="140" y1="100" x2="110" y2="125"/>
+        <line x1="150" y1="125" x2="195" y2="165"/>
+        <line x1="150" y1="125" x2="105" y2="165"/>
+      </g>
+      <path d="M 200 150 Q 215 140 225 155" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <text x="215" y="170" font-family="Heebo" font-size="11" fill="#c96f4a">מתיחה</text>
+    </svg>`,
+    steps: [
+      "מתיחת שוקיים: הנח רגל על מדרגה והורד את העקב (20 שניות כל רגל)",
+      "מתיחת ירך אחורית: ישיבה, רגל פשוטה, התכופף קדימה לאט",
+      "מתיחת ירך קדמית: עמוד, אחוז קרסול והבא לישבן (ליד קיר לתמיכה)",
+      "מתיחת ירך פנימית: ישיבה עם כפות רגליים נוגעות, דחוף ברכיים למטה",
+      "כל מתיחה — 20 שניות, ללא קפיצות",
+      "נשום רגיל במהלך המתיחה",
+    ],
+    tip: "מתיחה חמה (אחרי אימון) בטוחה יותר ויעילה יותר ממתיחה קרה.",
+    warn: "מתיחה אמורה להרגיש 'מושכת' אבל לא כואבת. אם כואב — עצור.",
+  },
+
+  "סקוואט לכיסא": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="170" y="120" width="70" height="45" fill="#3d5a42" fill-opacity="0.15" stroke="#3d5a42" stroke-width="2"/>
+      <line x1="170" y1="120" x2="170" y2="165" stroke="#3d5a42" stroke-width="2.5"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="120" cy="55" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="120" y1="68" x2="130" y2="120"/>
+        <line x1="125" y1="85" x2="95" y2="105"/>
+        <line x1="125" y1="85" x2="155" y2="100"/>
+        <line x1="130" y1="120" x2="155" y2="140"/>
+        <line x1="155" y1="140" x2="140" y2="165"/>
+        <line x1="130" y1="120" x2="115" y2="145"/>
+        <line x1="115" y1="145" x2="120" y2="165"/>
+      </g>
+      <path d="M 80 110 L 80 140" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr9)"/>
+      <path d="M 85 140 L 85 115" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr9)" opacity="0.5"/>
+      <defs><marker id="arr9" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עמוד לפני כיסא יציב, הגב אליו",
+      "רגליים ברוחב אגן, כפות רגליים שטוחות על הרצפה",
+      "פשוט ידיים קדימה לאיזון",
+      "רד לאט לאחור והושט את הישבן לכיוון הכיסא",
+      "גע קלות בכיסא עם הישבן — אל תשב לגמרי",
+      "דחוף מהעקבים וקום לתנוחת התחלה",
+    ],
+    tip: "הברכיים צריכות לעקוב אחרי האצבעות, לא להיכנס פנימה.",
+    warn: "אם הברכיים כואבות — הגבה את הכיסא (כרית למעלה) או הקטן את העומק.",
+  },
+
+  "הרמת עקבים": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="220" y="80" width="50" height="85" fill="#3d5a42" fill-opacity="0.15" stroke="#3d5a42" stroke-width="2"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="140" cy="40" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="140" y1="53" x2="140" y2="105"/>
+        <line x1="140" y1="68" x2="215" y2="105"/>
+        <line x1="140" y1="68" x2="115" y2="95"/>
+        <line x1="140" y1="105" x2="125" y2="150"/>
+        <line x1="140" y1="105" x2="155" y2="150"/>
+        <path d="M 120 150 L 130 155" stroke-width="4"/>
+        <path d="M 150 150 L 160 155" stroke-width="4"/>
+      </g>
+      <path d="M 185 140 L 185 115" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr10)"/>
+      <defs><marker id="arr10" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עמוד ליד קיר או כיסא, אחוז בידיים לאיזון",
+      "רגליים ברוחב אגן, כפות שטוחות על הרצפה",
+      "הרם את שני העקבים לאט, עלה על קצות האצבעות",
+      "החזק 2 שניות בנקודה הגבוהה",
+      "הורד עקבים לאט בחזרה לרצפה",
+      "חזור 15 פעמים",
+    ],
+    tip: "תרגיל מצוין לחיזוק שוקיים ולשיפור זרימת הדם מהרגליים.",
+    warn: "אל תעלה ותרד מהר — לאט יותר = יעיל יותר.",
+  },
+
+  "גשר ישבן": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="20" y1="140" x2="280" y2="140" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="65" cy="125" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="78" y1="125" x2="175" y2="105"/>
+        <line x1="120" y1="115" x2="140" y2="135"/>
+        <line x1="150" y1="112" x2="130" y2="135"/>
+        <line x1="175" y1="105" x2="210" y2="135"/>
+        <line x1="210" y1="135" x2="205" y2="162"/>
+        <line x1="175" y1="105" x2="195" y2="140"/>
+        <line x1="195" y1="140" x2="190" y2="162"/>
+      </g>
+      <path d="M 175 135 L 175 115" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr11)"/>
+      <defs><marker id="arr11" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "שכב על הגב על מזרן או שטיח",
+      "כופף ברכיים, כפות רגליים שטוחות על הרצפה ברוחב אגן",
+      "ידיים לצד הגוף, כפות על הרצפה",
+      "לחץ עקבים על הרצפה והרם את האגן למעלה",
+      "הגוף צריך ליצור קו ישר מכתפיים לברכיים",
+      "החזק שנייה בגובה ורד לאט בחזרה",
+    ],
+    tip: "דחוף מהישבן, לא מהגב התחתון — זה מה שעובד פה.",
+    warn: "אם כואב הגב התחתון — הקטן את גובה ההרמה.",
+  },
+
+  "ישיבה על הקיר": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="100" y1="20" x2="100" y2="170" stroke="#1f2a24" stroke-width="3"/>
+      <pattern id="wall2" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#1f2a24" stroke-width="0.5" opacity="0.3"/></pattern>
+      <rect x="60" y="20" width="40" height="150" fill="url(#wall2)"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="120" cy="50" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="110" y1="63" x2="110" y2="115"/>
+        <line x1="115" y1="75" x2="150" y2="95"/>
+        <line x1="115" y1="75" x2="155" y2="80"/>
+        <line x1="110" y1="115" x2="180" y2="115"/>
+        <line x1="180" y1="115" x2="185" y2="165"/>
+        <line x1="170" y1="115" x2="175" y2="165"/>
+      </g>
+      <text x="200" y="90" font-family="Frank Ruhl Libre" font-size="16" font-weight="700" fill="#c96f4a">90°</text>
+    </svg>`,
+    steps: [
+      "עמוד כשהגב אל הקיר, במרחק כ-30 ס\"מ ממנו",
+      "החלק את הגב למטה עד שהברכיים ב-90 מעלות",
+      "הירכיים מקבילות לרצפה, כאילו יושב על כיסא",
+      "גב צמוד לחלוטין לקיר, כתפיים רפויות",
+      "כפות הרגליים שטוחות, הברכיים מעל הקרסוליים",
+      "החזק 20 שניות, עלה, נוח, חזור",
+    ],
+    tip: "זהו התרגיל הכי טוב לחיזוק שריר הירך הקדמי בבית.",
+    warn: "אם כואבות הברכיים — רד פחות עמוק (רק 45 מעלות לבינתיים).",
+  },
+
+  "כיפוף רגל בעמידה": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="40" y="90" width="60" height="75" fill="#3d5a42" fill-opacity="0.15" stroke="#3d5a42" stroke-width="2"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="170" cy="45" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="170" y1="58" x2="170" y2="110"/>
+        <line x1="170" y1="75" x2="105" y2="100"/>
+        <line x1="170" y1="75" x2="195" y2="100"/>
+        <line x1="170" y1="110" x2="160" y2="165"/>
+        <line x1="170" y1="110" x2="195" y2="140"/>
+        <line x1="195" y1="140" x2="175" y2="130"/>
+      </g>
+      <path d="M 210 165 Q 220 145 200 135" stroke="#c96f4a" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arr12)"/>
+      <defs><marker id="arr12" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "עמוד זקוף, אחוז במשענת כיסא או קיר לאיזון",
+      "העבר משקל על רגל שמאל",
+      "כופף את ברך ימין לאחור, הבא את העקב לכיוון הישבן",
+      "החזק שנייה והורד לאט",
+      "10 חזרות לרגל ימין, ואז החלף",
+      "הגוף נשאר זקוף — רק הרגל זזה",
+    ],
+    tip: "תרגיל חשוב לחיזוק שרירי ירך אחוריים (מאזנים את השריר הקדמי).",
+    warn: "אל תטה את הגוף קדימה. הישאר זקוף.",
+  },
+
+  "הליכה קלה על הליכון": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="40" y="140" width="200" height="18" rx="3" fill="#3d5a42" opacity="0.15"/>
+      <rect x="40" y="135" width="200" height="8" rx="2" fill="#3d5a42"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="140" cy="55" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="140" y1="67" x2="140" y2="115"/>
+        <line x1="140" y1="80" x2="160" y2="100"/>
+        <line x1="140" y1="80" x2="122" y2="105"/>
+        <line x1="140" y1="115" x2="155" y2="135"/>
+        <line x1="140" y1="115" x2="125" y2="135"/>
+      </g>
+      <text x="170" y="95" font-family="Heebo" font-size="12" fill="#3d5a42">רגיעה</text>
+    </svg>`,
+    steps: [
+      "הגדר מהירות ל-3.5 קמ\"ש — קצב נעים ושיחתי",
+      "ללא שיפוע — הליכה ישרה",
+      "תנועה טבעית, בלי מאמץ",
+      "נשום עמוק, הרגש את המחזור הדם משתפר",
+      "15 דקות בדיוק — לא יותר, לא פחות",
+      "זה יום התאוששות, לא יום אימון קשה",
+    ],
+    tip: "בימי התאוששות הפעילות הקלה מזרזת החלמה יותר ממנוחה מלאה.",
+    warn: "אם מרגיש שזה קשה — אתה הולך מהר מדי. הורד מהירות.",
+  },
+
+  "זרימת טאי-צ'י בסיסית": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="150" cy="45" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="150" y1="58" x2="150" y2="115"/>
+        <line x1="150" y1="72" x2="95" y2="85"/>
+        <line x1="95" y1="85" x2="75" y2="100"/>
+        <line x1="150" y1="72" x2="205" y2="85"/>
+        <line x1="205" y1="85" x2="225" y2="70"/>
+        <line x1="150" y1="115" x2="130" y2="165"/>
+        <line x1="150" y1="115" x2="170" y2="165"/>
+      </g>
+      <path d="M 70 110 Q 50 90 60 60" stroke="#c96f4a" stroke-width="1.5" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <path d="M 230 60 Q 250 80 240 110" stroke="#c96f4a" stroke-width="1.5" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <text x="150" y="155" text-anchor="middle" font-family="Heebo" font-size="10" fill="#c96f4a">תנועה איטית ורציפה</text>
+    </svg>`,
+    steps: [
+      "עמוד זקוף, רגליים ברוחב אגן, ברכיים רכות",
+      "הרם ידיים לאט לגובה כתפיים — שאיפה",
+      "הורד ידיים בעדינות — נשיפה",
+      "הסט משקל לרגל ימין, סובב קלות את הגוף ימינה",
+      "חזור למרכז, החלף לרגל שמאל",
+      "תנועה רציפה, איטית, כאילו הידיים צפות במים",
+    ],
+    tip: "טאי-צ'י מוכח מדעית לשיפור שיווי משקל ולהפחתת נפילות בגיל השלישי.",
+    warn: "אין כאן 'נכון ולא נכון' — המפתח הוא תנועה איטית ונשימה שקטה.",
+  },
+
+  "עמידה על רגל אחת": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="150" cy="40" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="150" y1="53" x2="150" y2="105"/>
+        <line x1="150" y1="68" x2="120" y2="90"/>
+        <line x1="150" y1="68" x2="180" y2="90"/>
+        <line x1="150" y1="105" x2="155" y2="165"/>
+        <line x1="150" y1="105" x2="180" y2="135"/>
+        <line x1="180" y1="135" x2="170" y2="125"/>
+      </g>
+      <path d="M 155 170 L 155 175" stroke="#c96f4a" stroke-width="4"/>
+      <text x="230" y="110" font-family="Heebo" font-size="11" fill="#c96f4a">30 שניות</text>
+      <text x="230" y="125" font-family="Heebo" font-size="11" fill="#c96f4a">כל רגל</text>
+    </svg>`,
+    steps: [
+      "עמוד ליד קיר או כיסא — היכן שתוכל להיאחז במידת הצורך",
+      "רגליים ביחד, העבר את המשקל לרגל אחת",
+      "הרם את הרגל השנייה קצת מהרצפה (10 ס\"מ מספיק)",
+      "מצא נקודת מבט קבועה לפניך וקבע בה את העיניים",
+      "החזק 30 שניות (או כמה שאתה יכול)",
+      "החלף רגל, חזור 3 פעמים לכל רגל",
+    ],
+    tip: "מתקדם? סגור עיניים. זה מגביר משמעותית את אתגר האיזון.",
+    warn: "תמיד תרגל ליד משהו שאפשר להיאחז בו. עדיף לא ליפול.",
+  },
+
+  "הליכת עקב-אגודל": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#1f2a24" stroke-width="2"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="150" cy="45" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="150" y1="58" x2="150" y2="115"/>
+        <line x1="150" y1="72" x2="185" y2="95"/>
+        <line x1="150" y1="72" x2="115" y2="95"/>
+        <line x1="150" y1="115" x2="135" y2="165"/>
+        <line x1="150" y1="115" x2="175" y2="165"/>
+      </g>
+      <rect x="130" y="163" width="20" height="6" fill="#c96f4a" opacity="0.7"/>
+      <rect x="170" y="163" width="20" height="6" fill="#c96f4a" opacity="0.7"/>
+      <circle cx="100" cy="172" r="2" fill="#c96f4a"/>
+      <circle cx="120" cy="172" r="2" fill="#c96f4a"/>
+      <circle cx="220" cy="172" r="2" fill="#c96f4a" opacity="0.5"/>
+      <text x="150" y="20" text-anchor="middle" font-family="Heebo" font-size="10" fill="#c96f4a">קו ישר — רגל נוגעת רגל</text>
+    </svg>`,
+    steps: [
+      "עמוד בקצה חדר, תרגל ליד קיר לתמיכה במידת הצורך",
+      "הנח רגל אחת לפני השנייה — אצבעות של הרגל האחורית נוגעות בעקב של הקדמית",
+      "הזיזו ביד לרגל האחורית קדימה ועשה צעד דומה",
+      "התקדם 10 צעדים כאילו הולך על חבל דק",
+      "סובב את הגוף בעדינות ושוב 10 צעדים חזרה",
+      "המבט קדימה, לא למטה",
+    ],
+    tip: "זה התרגיל שבודקים במרפאות נוירולוגיות — אם קשה, זה אומר שהתרגול חיוני.",
+    warn: "תרגל במסדרון צר או ליד קיר, כך שיש במה להיאחז אם תאבד איזון.",
+  },
+
+  "יוגה עדינה": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="100" cy="115" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <path d="M 112 115 Q 150 95 190 110"/>
+        <line x1="120" y1="113" x2="115" y2="155"/>
+        <line x1="130" y1="112" x2="145" y2="155"/>
+        <line x1="190" y1="110" x2="180" y2="155"/>
+        <line x1="190" y1="110" x2="215" y2="155"/>
+      </g>
+      <text x="150" y="35" text-anchor="middle" font-family="Frank Ruhl Libre" font-size="14" fill="#3d5a42">תנוחת חתול-פרה</text>
+      <path d="M 130 85 Q 150 75 170 85" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+    </svg>`,
+    steps: [
+      "חתול-פרה: על ארבע, קמר גב (חתול), ואז שקע (פרה) — 10 חזרות",
+      "תנוחת הילד: ישיבה על העקבים, גוף קדימה, זרועות פשוטות — נשום 5 פעמים",
+      "תנוחת הכלב הזקן: על ארבע, אגן למעלה, רגליים פשוטות — החזק 20 שניות",
+      "תנוחת הגשר: שכיבה על הגב, הרם אגן עדין — החזק 15 שניות",
+      "ישיבה עם רגל מקופלת: סובב עליון לאט שמאל וימין — 5 סיבובים",
+      "שכיבה על הגב, ברכיים לחזה, נענע עדין — 1 דקה",
+    ],
+    tip: "יוגה זה לא לנסות להגיע רחוק — זה להרגיש את הגוף. אל תתחרה.",
+    warn: "אל תחזיק נשימה. אם לא נוח — יצא מהתנוחה.",
+  },
+
+  "נשימה עמוקה": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="150" cy="55" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="150" y1="68" x2="150" y2="120"/>
+        <line x1="150" y1="82" x2="120" y2="105"/>
+        <line x1="150" y1="82" x2="180" y2="105"/>
+        <line x1="150" y1="120" x2="110" y2="140"/>
+        <line x1="150" y1="120" x2="190" y2="140"/>
+        <line x1="110" y1="140" x2="105" y2="165"/>
+        <line x1="190" y1="140" x2="195" y2="165"/>
+      </g>
+      <ellipse cx="150" cy="95" rx="22" ry="15" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+      <text x="220" y="60" font-family="Heebo" font-size="11" fill="#c96f4a">שאיפה 4</text>
+      <text x="220" y="78" font-family="Heebo" font-size="11" fill="#c96f4a">נשיפה 6</text>
+    </svg>`,
+    steps: [
+      "שב בנוחות — על כיסא או על הרצפה עם גב זקוף",
+      "הנח יד אחת על הבטן, יד שנייה על החזה",
+      "שאף דרך האף 4 שניות — הבטן אמורה להתרחב",
+      "החזק נשימה קלה — 1 שנייה",
+      "נשוף דרך הפה 6 שניות — הבטן יורדת",
+      "חזור על המחזור במשך 5 דקות",
+    ],
+    tip: "נשימה עמוקה מפעילה את מערכת העצבים הפרא-סימפטטית — מרגיעה את הלב ולחץ הדם.",
+    warn: "אם מרגיש סחרחורת — חזור לנשימה רגילה. לא להכריח.",
+  },
+
+  "פלנק על הברכיים": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="160" x2="280" y2="160" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="70" cy="90" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="82" y1="90" x2="190" y2="115"/>
+        <line x1="90" y1="95" x2="75" y2="155"/>
+        <line x1="190" y1="115" x2="195" y2="160"/>
+        <line x1="190" y1="115" x2="225" y2="155"/>
+      </g>
+      <line x1="60" y1="160" x2="110" y2="160" stroke="#c96f4a" stroke-width="4"/>
+      <line x1="180" y1="160" x2="230" y2="160" stroke="#c96f4a" stroke-width="4"/>
+      <text x="150" y="40" text-anchor="middle" font-family="Heebo" font-size="11" fill="#c96f4a">גוף ישר מראש עד ברכיים</text>
+    </svg>`,
+    steps: [
+      "התייצב על ארבע על מזרן",
+      "הנח את האמות על הרצפה, מרפקים מתחת לכתפיים",
+      "הרגליים ישרות לאחור, הברכיים על הרצפה",
+      "שמור על קו ישר מהראש עד הברכיים",
+      "כווץ בטן וישבן — אל תיתן לאגן לצנוח",
+      "החזק 20-30 שניות, נוח, חזור 3 פעמים",
+    ],
+    tip: "עדיף 20 שניות פלנק נכון מ-60 שניות פלנק רע.",
+    warn: "אם הגב התחתון כואב — הורד את הברכיים יותר קרוב לחזה, או עצור.",
+  },
+
+  "Dead Bug": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="20" y1="150" x2="280" y2="150" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="65" cy="130" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="78" y1="130" x2="195" y2="130"/>
+        <line x1="115" y1="130" x2="70" y2="80"/>
+        <line x1="155" y1="130" x2="205" y2="85"/>
+        <line x1="195" y1="130" x2="235" y2="115"/>
+        <line x1="235" y1="115" x2="260" y2="130"/>
+        <line x1="195" y1="130" x2="220" y2="90"/>
+      </g>
+      <path d="M 70 70 L 70 55" stroke="#c96f4a" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#arr13)"/>
+      <path d="M 220 80 L 225 65" stroke="#c96f4a" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#arr13)"/>
+      <defs><marker id="arr13" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+    </svg>`,
+    steps: [
+      "שכב על הגב על מזרן",
+      "הרם זרועות אנכית למעלה מעל החזה",
+      "הרם את הרגליים בזווית 90 מעלות — ברכיים כפופות מעל האגן",
+      "הורד לאט יד ימין אחורה וגם רגל שמאל קדימה (צד נגדי)",
+      "חזור למרכז, החלף — יד שמאל ורגל ימין",
+      "10 חזרות לכל צד, גב תחתון נשאר צמוד לרצפה",
+    ],
+    tip: "הסוד — הגב התחתון חייב להישאר צמוד לרצפה לאורך כל התנועה.",
+    warn: "אם הגב מתרומם — הורד פחות רחוק. עדיף תנועה קצרה אך נכונה.",
+  },
+
+  "Bird Dog": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="65" cy="100" r="13" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="78" y1="100" x2="190" y2="100"/>
+        <line x1="85" y1="105" x2="85" y2="165"/>
+        <line x1="190" y1="100" x2="235" y2="100"/>
+        <line x1="235" y1="100" x2="265" y2="85"/>
+        <line x1="190" y1="100" x2="225" y2="70"/>
+        <line x1="225" y1="70" x2="265" y2="55"/>
+      </g>
+      <path d="M 50 90 L 35 70" stroke="#c96f4a" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#arr14)"/>
+      <path d="M 35 70 L 10 55" stroke="#c96f4a" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#arr14)"/>
+      <defs><marker id="arr14" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+      <text x="150" y="40" text-anchor="middle" font-family="Heebo" font-size="10" fill="#c96f4a">יד וגל נגדיות ביחד</text>
+    </svg>`,
+    steps: [
+      "התמקם על ארבע — ידיים מתחת לכתפיים, ברכיים מתחת לאגן",
+      "שמור על גב ישר כמו שולחן",
+      "הושט יד ימין קדימה בגובה הכתף",
+      "במקביל — הושט רגל שמאל אחורה בגובה האגן",
+      "החזק 3 שניות, חזור למרכז לאט",
+      "החלף — יד שמאל ורגל ימין",
+    ],
+    tip: "תרגיל מעולה לליבה והגב — אחד הבטוחים והאפקטיביים ביותר.",
+    warn: "אל תקמר את הגב או תסתובב. הגוף כמו שולחן יציב.",
+  },
+
+  "כפיפות בטן צד בעמידה": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="145" cy="45" r="13" fill="#1f2a24" fill-opacity="0.1" transform="rotate(15 145 45)"/>
+        <line x1="150" y1="58" x2="160" y2="115"/>
+        <line x1="155" y1="75" x2="195" y2="50"/>
+        <line x1="195" y1="50" x2="210" y2="20"/>
+        <line x1="152" y1="72" x2="115" y2="100"/>
+        <line x1="160" y1="115" x2="145" y2="165"/>
+        <line x1="160" y1="115" x2="170" y2="165"/>
+      </g>
+      <path d="M 100 70 Q 130 55 165 75" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round"/>
+      <text x="240" y="40" font-family="Heebo" font-size="11" fill="#c96f4a">כיפוף</text>
+      <text x="240" y="55" font-family="Heebo" font-size="11" fill="#c96f4a">הצידה</text>
+    </svg>`,
+    steps: [
+      "עמוד זקוף, רגליים ברוחב כתפיים",
+      "ימין: הנח יד ימין מאחורי הראש, מרפק לצד",
+      "יד שמאל — פשוט לצד הגוף",
+      "כופף את הגוף הצידה לשמאל, יד שמאל גולשת למטה",
+      "חזור למרכז, 12 חזרות, אז החלף צד",
+      "התנועה איטית ומבוקרת",
+    ],
+    tip: "תרגיל מצוין לשרירים ההיקפיים של הבטן — החלק שקשה לעבוד עליו.",
+    warn: "לא להתכופף קדימה או אחורה — רק הצידה.",
+  },
+
+  "טיפוס הרים איטי": {
+    svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="20" y1="160" x2="280" y2="160" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/>
+      <g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none">
+        <circle cx="70" cy="95" r="12" fill="#1f2a24" fill-opacity="0.1"/>
+        <line x1="80" y1="100" x2="200" y2="105"/>
+        <line x1="85" y1="100" x2="85" y2="155"/>
+        <line x1="200" y1="105" x2="240" y2="155"/>
+        <line x1="140" y1="102" x2="135" y2="130"/>
+        <line x1="135" y1="130" x2="125" y2="155"/>
+      </g>
+      <path d="M 130 150 Q 145 130 155 115" stroke="#c96f4a" stroke-width="2" stroke-dasharray="3 3" fill="none" stroke-linecap="round" marker-end="url(#arr15)"/>
+      <defs><marker id="arr15" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 5 3 L 0 6" fill="#c96f4a"/></marker></defs>
+      <text x="150" y="30" text-anchor="middle" font-family="Heebo" font-size="11" fill="#c96f4a">תנועה איטית ומבוקרת</text>
+    </svg>`,
+    steps: [
+      "התמקם בתנוחת פלנק — ידיים ישרות מתחת לכתפיים",
+      "גוף ישר מהראש עד העקבים",
+      "הבא את ברך ימין לאט לעבר החזה",
+      "החזק שנייה, החזר בשליטה",
+      "החלף — ברך שמאל לחזה",
+      "20 שניות של חילופים איטיים, נוח, חזור 3 פעמים",
+    ],
+    tip: "גירסה האיטית יעילה יותר ובטוחה יותר מהמהירה — במיוחד בגיל שלנו.",
+    warn: "אם האגן מתחיל לצנוח — עצור ונוח. טכניקה קודמת לכמות.",
+  },
+};
+
+// Generic fallback guide for exercises not explicitly listed
+const DEFAULT_GUIDE = {
+  svg: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg"><line x1="20" y1="170" x2="280" y2="170" stroke="#d6cdbb" stroke-width="1" stroke-dasharray="4 4"/><g stroke="#1f2a24" stroke-width="3" stroke-linecap="round" fill="none"><circle cx="150" cy="50" r="13" fill="#1f2a24" fill-opacity="0.1"/><line x1="150" y1="63" x2="150" y2="120"/><line x1="150" y1="78" x2="120" y2="105"/><line x1="150" y1="78" x2="180" y2="105"/><line x1="150" y1="120" x2="130" y2="165"/><line x1="150" y1="120" x2="170" y2="165"/></g></svg>`,
+  steps: ["צפה בסרטון ההדגמה ביוטיוב ללמידת טכניקה נכונה"],
+  tip: "בכל ספק — התייעץ עם מאמן כושר או פיזיותרפיסט.",
+  warn: "אל תבצע תרגיל שלא ברור לך. עדיף לוותר מלהיפצע.",
+};
+
+// Workouts keyed by day-of-week (0=Sunday ... 6=Saturday)
+// treadmill: { speed, incline, minutes } - indicates this is a treadmill exercise
+const WORKOUTS = {
+  0: {
+    title: "פלג גוף עליון — כוח",
+    eyebrow: "יום ראשון",
+    duration: "40 דק'",
+    intensity: "בינונית",
+    tip: "התחל בחימום קצר על ההליכון — הוא מכין את הלב ואת השרירים לעומס. אם משקולות אינן זמינות, ניתן להשתמש בבקבוקי מים מלאים.",
+    exercises: [
+      { name: "חימום על הליכון", desc: "הליכה רגועה להכנת הגוף לאימון", sets: "1", reps: "5 דק'", treadmill: { speed: 3.5, incline: 0, minutes: 5 }, demo: "treadmill warm up walking beginners" },
+      { name: "שכיבות סמיכה לקיר", desc: "עמוד מול קיר, ידיים בגובה חזה, התקרב והתרחק", sets: "3", reps: "10–12", demo: "wall push ups for seniors demo" },
+      { name: "חתירה עם גומייה", desc: "ישיבה על כיסא, גומייה סביב כפות רגליים, משיכה לבטן", sets: "3", reps: "12", demo: "seated resistance band row exercise" },
+      { name: "הרמת כתפיים", desc: "משקולות קלות או בקבוקי מים, הרמה מעל הראש", sets: "3", reps: "10", demo: "dumbbell shoulder press seniors" },
+      { name: "כיפוף מרפקים", desc: "Biceps curls עם משקולות 1–2 ק\"ג", sets: "3", reps: "12", demo: "bicep curls dumbbell form tutorial" },
+      { name: "מתיחות כתפיים וצוואר", desc: "סיום — 5 דקות מתיחה עדינה", sets: "1", reps: "5 דק'", demo: "neck and shoulder stretches seniors" },
+    ],
+  },
+  1: {
+    title: "הליכון + ניידות",
+    eyebrow: "יום שני",
+    duration: "45 דק'",
+    intensity: "קלה-בינונית",
+    tip: "זהו יום ההליכון המרכזי. התחל איטי, העלה קצב בהדרגה, וסיים איטי. אם מרגיש קוצר נשימה שלא מאפשר לך לדבר — הורד את הקצב. אל תשכח לשתות מים.",
+    exercises: [
+      { name: "חימום על הליכון", desc: "הליכה רגועה להתנעה", sets: "1", reps: "5 דק'", treadmill: { speed: 3.0, incline: 0, minutes: 5 }, demo: "treadmill warm up walking slow pace" },
+      { name: "הליכה בקצב בינוני", desc: "הקצב העיקרי — אמור להרגיש מאומץ אך נוח לדיבור", sets: "1", reps: "20 דק'", treadmill: { speed: 4.5, incline: 1, minutes: 20 }, demo: "treadmill walking workout seniors moderate pace" },
+      { name: "הליכה בשיפוע קל", desc: "הגבר את השיפוע לחיזוק רגליים וישבן", sets: "1", reps: "5 דק'", treadmill: { speed: 4.0, incline: 3, minutes: 5 }, demo: "treadmill incline walking workout" },
+      { name: "הרגעה על הליכון", desc: "האטה הדרגתית להחזרת הדופק למנוחה", sets: "1", reps: "5 דק'", treadmill: { speed: 3.0, incline: 0, minutes: 5 }, demo: "treadmill cool down walking" },
+      { name: "מתיחות רגליים", desc: "מתיחת שוקיים, ירכיים אחוריות ופנימיות", sets: "1", reps: "10 דק'", demo: "post workout leg stretches seniors" },
+    ],
+  },
+  2: {
+    title: "פלג גוף תחתון — כוח",
+    eyebrow: "יום שלישי",
+    duration: "40 דק'",
+    intensity: "בינונית",
+    tip: "חיזוק רגליים מצוין לשיווי משקל ולמניעת נפילות. חימום על ההליכון חשוב במיוחד היום — שרירי הרגליים חייבים להיות מוכנים. אם כואבות הברכיים — הקטן את עומק הסקוואט.",
+    exercises: [
+      { name: "חימום על הליכון", desc: "הליכה להחמת שרירי רגליים", sets: "1", reps: "5 דק'", treadmill: { speed: 3.5, incline: 0, minutes: 5 }, demo: "treadmill leg warm up walking" },
+      { name: "סקוואט לכיסא", desc: "ירידה עד נגיעה קלה בכיסא וחזרה למעלה", sets: "3", reps: "12", demo: "chair squat exercise for seniors" },
+      { name: "הרמת עקבים", desc: "עמידה, תוך אחיזה בכיסא לאיזון", sets: "3", reps: "15", demo: "standing calf raises exercise demo" },
+      { name: "גשר ישבן", desc: "שכיבה על הגב, ברכיים כפופות, הרמת אגן", sets: "3", reps: "12", demo: "glute bridge exercise tutorial" },
+      { name: "ישיבה על הקיר", desc: "גב לקיר, ברכיים ב-90 מעלות, החזק", sets: "3", reps: "20 שניות", demo: "wall sit exercise proper form" },
+      { name: "כיפוף רגל בעמידה", desc: "אחיזה בכיסא, הבאת עקב לישבן", sets: "3", reps: "10 לכל רגל", demo: "standing hamstring curl exercise" },
+    ],
+  },
+  3: {
+    title: "הליכה קלה, גמישות ואיזון",
+    eyebrow: "יום רביעי",
+    duration: "40 דק'",
+    intensity: "קלה",
+    tip: "היום יום 'התאוששות פעילה' — הליכה קלה על ההליכון מחממת את הגוף לקראת התרגילים העדינים שאחריה. הפעילות העדינה אך חיונית לגמישות ולאיזון — מפתחות שבגיל שלנו קריטיות למניעת נפילות.",
+    exercises: [
+      { name: "הליכה קלה על הליכון", desc: "קצב נעים, בלי שיפוע — הליכה משחררת", sets: "1", reps: "15 דק'", treadmill: { speed: 3.5, incline: 0, minutes: 15 }, demo: "easy treadmill walking recovery" },
+      { name: "זרימת טאי-צ'י בסיסית", desc: "תנועות איטיות ורציפות של ידיים ורגליים", sets: "1", reps: "10 דק'", demo: "tai chi for beginners seniors 10 minutes" },
+      { name: "עמידה על רגל אחת", desc: "ליד קיר לביטחון, החלף רגל", sets: "3", reps: "30 שניות לרגל", demo: "single leg balance exercise seniors" },
+      { name: "הליכת עקב-אגודל", desc: "קו ישר, רגל לפני רגל, 10 צעדים", sets: "3", reps: "10 צעדים", demo: "heel to toe walk balance exercise" },
+      { name: "יוגה עדינה", desc: "תנוחות חתול-פרה, ילד, עקרב עדין", sets: "1", reps: "10 דק'", demo: "gentle yoga for seniors 10 minutes" },
+      { name: "נשימה עמוקה", desc: "ישיבה נוחה, 4 שניות שאיפה, 6 שניות נשיפה", sets: "1", reps: "5 דק'", demo: "deep breathing exercise 4 7 8 technique" },
+    ],
+  },
+  4: {
+    title: "גוף מלא וליבה",
+    eyebrow: "יום חמישי",
+    duration: "40 דק'",
+    intensity: "בינונית",
+    tip: "סיום השבוע בחוזק. הקפד על טכניקה נכונה — איכות חשובה יותר מכמות. אם משהו כואב, עצור.",
+    exercises: [
+      { name: "חימום על הליכון", desc: "הליכה להעלאת טמפרטורת הגוף", sets: "1", reps: "5 דק'", treadmill: { speed: 3.5, incline: 0, minutes: 5 }, demo: "treadmill warm up walking beginners" },
+      { name: "פלנק על הברכיים", desc: "מצב פלנק אך עם ברכיים על הרצפה", sets: "3", reps: "20–30 שניות", demo: "knee plank exercise proper form" },
+      { name: "Dead Bug", desc: "שכיבה, הורדת יד ורגל נגדיות לסירוגין", sets: "3", reps: "10 לכל צד", demo: "dead bug exercise tutorial beginners" },
+      { name: "Bird Dog", desc: "על ארבע, פשיטת יד ורגל נגדיות", sets: "3", reps: "10 לכל צד", demo: "bird dog exercise demo tutorial" },
+      { name: "כפיפות בטן צד בעמידה", desc: "יד לצד הראש, כיפוף הצידה", sets: "3", reps: "12 לכל צד", demo: "standing side crunch exercise" },
+      { name: "טיפוס הרים איטי", desc: "מצב לוח, הבאת ברך לחזה לסירוגין", sets: "3", reps: "20 שניות", demo: "slow mountain climbers beginners" },
+    ],
+  },
+  5: { rest: true, title: "יום שישי", note: "יום מנוחה — תן לגוף להתאושש" },
+  6: { rest: true, title: "שבת", note: "יום מנוחה — ממש תיהנה, שבוע הבא מחכה" },
+};
+
+// ============ STATE ============
+let state = {
+  completions: {}, // { "2026-04-17": { exerciseIndexes: [...], completed: true } }
+  notes: {},       // { "2026-04-17": "text" }
+  reminder: { enabled: false, time: "08:00" },
+  viewingDate: new Date().toISOString().split('T')[0],
+  currentView: 'today', // 'today' | 'progress' | 'settings'
+  progressMetric: 'km', // 'km' | 'workouts'
+};
+
+// ============ STORAGE ============
+async function loadState() {
+  try {
+    if (window.storage) {
+      const result = await window.storage.get('fitness_state');
+      if (result && result.value) {
+        const saved = JSON.parse(result.value);
+        state = {
+          ...state,
+          ...saved,
+          viewingDate: new Date().toISOString().split('T')[0],
+          currentView: 'today',
+        };
+      }
+    }
+  } catch (e) {
+    // Key not found or error - use default state
+  }
+}
+
+async function saveState() {
+  try {
+    if (window.storage) {
+      await window.storage.set('fitness_state', JSON.stringify({
+        completions: state.completions,
+        notes: state.notes,
+        reminder: state.reminder,
+      }));
+    }
+  } catch (e) {
+    console.error('Save failed:', e);
+  }
+}
+
+// ============ HELPERS ============
+function getDateForDayOfWeek(dayOfWeek) {
+  const today = new Date();
+  const currentDow = today.getDay();
+  const diff = dayOfWeek - currentDow;
+  const target = new Date(today);
+  target.setDate(today.getDate() + diff);
+  return target.toISOString().split('T')[0];
+}
+
+function getWeekDates() {
+  const today = new Date();
+  const currentDow = today.getDay();
+  const sunday = new Date(today);
+  sunday.setDate(today.getDate() - currentDow);
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(sunday);
+    d.setDate(sunday.getDate() + i);
+    return d.toISOString().split('T')[0];
+  });
+}
+
+function formatDateHebrew(dateStr) {
+  const d = new Date(dateStr);
+  const day = HEBREW_DAYS[d.getDay()];
+  const dom = d.getDate();
+  const months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+  return `יום ${day}, ${dom} ב${months[d.getMonth()]}`;
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'בוקר טוב! מוכן לאימון?';
+  if (h < 17) return 'צהריים טובים! קדימה נתחיל.';
+  if (h < 20) return 'ערב טוב! עוד אפשר להספיק.';
+  return 'לילה טוב. נוח היטב.';
+}
+
+function isWorkoutDone(date) {
+  return state.completions[date]?.completed === true;
+}
+
+function getExerciseCompletions(date) {
+  return state.completions[date]?.exerciseIndexes || [];
+}
+
+function calcStats() {
+  const weekDates = getWeekDates();
+  const workoutDates = weekDates.slice(0, 5); // Sun-Thu
+  const completedThisWeek = workoutDates.filter(d => isWorkoutDone(d)).length;
+
+  // Streak: count consecutive completed workouts backward from today (skipping rest days)
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 90; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dow = d.getDay();
+    if (dow === 5 || dow === 6) continue; // skip Fri/Sat
+    const dateStr = d.toISOString().split('T')[0];
+    if (isWorkoutDone(dateStr)) {
+      streak++;
+    } else if (i > 0) {
+      break;
+    } else if (i === 0) {
+      // today not done yet - don't break, continue counting past days
+      continue;
+    }
+  }
+
+  // Total workouts ever
+  const totalDone = Object.values(state.completions).filter(c => c.completed).length;
+
+  // Treadmill stats this week: sum minutes and distance from completed treadmill exercises
+  let treadmillMinutes = 0;
+  let treadmillKm = 0;
+  workoutDates.forEach((date, idx) => {
+    const dow = idx; // 0..4 = Sun..Thu
+    const workout = WORKOUTS[dow];
+    if (!workout.exercises) return;
+    const doneIdx = getExerciseCompletions(date);
+    workout.exercises.forEach((ex, i) => {
+      if (ex.treadmill && doneIdx.includes(i)) {
+        treadmillMinutes += ex.treadmill.minutes;
+        treadmillKm += (ex.treadmill.speed * ex.treadmill.minutes) / 60;
+      }
+    });
+  });
+
+  return { completedThisWeek, streak, totalDone, treadmillMinutes, treadmillKm: treadmillKm.toFixed(1) };
+}
+
+// Calculate weekly stats for last N weeks
+function calcWeekHistory(weeksBack = 8) {
+  const today = new Date();
+  const currentDow = today.getDay();
+  const thisSunday = new Date(today);
+  thisSunday.setDate(today.getDate() - currentDow);
+  thisSunday.setHours(0, 0, 0, 0);
+
+  const weeks = [];
+  for (let w = weeksBack - 1; w >= 0; w--) {
+    const weekStart = new Date(thisSunday);
+    weekStart.setDate(thisSunday.getDate() - (w * 7));
+
+    let workouts = 0;
+    let km = 0;
+    let minutes = 0;
+
+    // Check each workout day (Sun-Thu) of this week
+    for (let d = 0; d < 5; d++) {
+      const date = new Date(weekStart);
+      date.setDate(weekStart.getDate() + d);
+      const dateStr = date.toISOString().split('T')[0];
+      const workout = WORKOUTS[d];
+
+      if (isWorkoutDone(dateStr)) workouts++;
+
+      // Treadmill stats
+      if (workout.exercises) {
+        const doneIdx = getExerciseCompletions(dateStr);
+        workout.exercises.forEach((ex, i) => {
+          if (ex.treadmill && doneIdx.includes(i)) {
+            minutes += ex.treadmill.minutes;
+            km += (ex.treadmill.speed * ex.treadmill.minutes) / 60;
+          }
+        });
+      }
+    }
+
+    weeks.push({
+      startDate: weekStart.toISOString().split('T')[0],
+      label: `${weekStart.getDate()}/${weekStart.getMonth() + 1}`,
+      workouts,
+      km: Math.round(km * 10) / 10,
+      minutes,
+      isCurrent: w === 0,
+    });
+  }
+
+  return weeks;
+}
+
+function renderChart(weeks, metric) {
+  // Chart dimensions
+  const W = 600, H = 240;
+  const padL = 40, padR = 20, padT = 20, padB = 50;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  const values = weeks.map(w => metric === 'km' ? w.km : w.workouts);
+  const maxVal = Math.max(...values, metric === 'km' ? 10 : 5);
+  const niceMax = Math.ceil(maxVal / 5) * 5 || 5;
+
+  const barWidth = chartW / weeks.length * 0.65;
+  const barGap = chartW / weeks.length * 0.35;
+  const xStep = chartW / weeks.length;
+
+  // Grid lines (5 horizontal)
+  const gridCount = 5;
+  const gridLines = [];
+  for (let i = 0; i <= gridCount; i++) {
+    const y = padT + (chartH / gridCount) * i;
+    const value = niceMax - (niceMax / gridCount) * i;
+    gridLines.push({ y, value: Math.round(value * 10) / 10 });
+  }
+
+  return `
+    <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+      <!-- Grid lines -->
+      ${gridLines.map(g => `
+        <line class="chart-grid" x1="${padL}" y1="${g.y}" x2="${W - padR}" y2="${g.y}"/>
+        <text class="chart-label" x="${padL - 8}" y="${g.y + 4}" text-anchor="end">${g.value}</text>
+      `).join('')}
+
+      <!-- Bars -->
+      ${weeks.map((w, i) => {
+        const value = metric === 'km' ? w.km : w.workouts;
+        const barH = (value / niceMax) * chartH;
+        const x = padL + xStep * i + barGap / 2;
+        const y = padT + chartH - barH;
+        const displayValue = metric === 'km' ? (value > 0 ? value.toFixed(1) : '') : (value > 0 ? value : '');
+
+        return `
+          <rect class="chart-bar ${w.isCurrent ? 'current' : ''}"
+                x="${x}" y="${y}" width="${barWidth}" height="${barH}"
+                rx="4" ry="4"/>
+          ${value > 0 ? `<text class="chart-value" x="${x + barWidth/2}" y="${y - 6}" text-anchor="middle">${displayValue}</text>` : ''}
+          <text class="chart-label" x="${x + barWidth/2}" y="${H - padB + 18}" text-anchor="middle">${w.label}</text>
+          ${w.isCurrent ? `<text class="chart-label" x="${x + barWidth/2}" y="${H - padB + 34}" text-anchor="middle" style="fill: var(--terra); font-weight: 600;">השבוע</text>` : ''}
+        `;
+      }).join('')}
+
+      <!-- Y axis label -->
+      <text class="chart-label" x="${padL - 8}" y="${padT - 8}" text-anchor="end" style="font-weight: 600;">${metric === 'km' ? 'ק״מ' : 'ימים'}</text>
+    </svg>
+  `;
+}
+
+// ============ RENDER ============
+function render() {
+  const app = document.getElementById('app');
+  const todayDate = new Date().toISOString().split('T')[0];
+  const view = state.currentView || 'today';
+
+  let mainContent = '';
+  if (view === 'today') {
+    mainContent = renderTodayView();
+  } else if (view === 'progress') {
+    mainContent = renderProgressView();
+  } else if (view === 'settings') {
+    mainContent = renderSettingsView();
+  }
+
+  app.innerHTML = `
+    <header>
+      <div class="brand">
+        <div class="brand-sub">מסלול אימונים ביתי</div>
+        <div class="brand-title">כושר <span>בבית</span></div>
+      </div>
+      <div class="date-card">
+        <div class="date-today">${formatDateHebrew(todayDate)}</div>
+        <div class="date-greeting">${getGreeting()}</div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab ${view === 'today' ? 'active' : ''}" onclick="switchView('today')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/></svg>
+        אימון היום
+      </button>
+      <button class="tab ${view === 'progress' ? 'active' : ''}" onclick="switchView('progress')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3v18h18v-2H5V3H3zm4 14h2v-6H7v6zm4 0h2V9h-2v8zm4 0h2v-3h-2v3zm4 0h2V7h-2v10z"/></svg>
+        התקדמות
+      </button>
+      <button class="tab ${view === 'settings' ? 'active' : ''}" onclick="switchView('settings')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.94 3a7 7 0 00-.13-1l2.03-1.58-2-3.46-2.39.96a7 7 0 00-1.73-1L16.38 2h-4l-.34 2.92a7 7 0 00-1.73 1l-2.39-.96-2 3.46L7.94 10a7 7 0 00-.13 1c0 .34.05.67.13 1l-2.03 1.58 2 3.46 2.39-.96a7 7 0 001.73 1l.34 2.92h4l.34-2.92a7 7 0 001.73-1l2.39.96 2-3.46L20.81 12c.08-.33.13-.66.13-1z"/></svg>
+        הגדרות
+      </button>
+    </nav>
+
+    ${mainContent}
+
+    <div class="footer">
+      <span>הנתונים שלך נשמרים אוטומטית על המכשיר</span>
+      <button class="reset-link" onclick="resetData()">איפוס נתונים</button>
+    </div>
+  `;
+}
+
+function renderTodayView() {
+  const todayDate = new Date().toISOString().split('T')[0];
+  const viewingDate = state.viewingDate;
+  const d = new Date(viewingDate);
+  const dow = d.getDay();
+  const workout = WORKOUTS[dow];
+  const stats = calcStats();
+  const weekDates = getWeekDates();
+  const currentNote = state.notes[viewingDate] || '';
+
+  return `
+    <section class="dashboard">
+      <div class="stat">
+        <div class="stat-label">השבוע</div>
+        <div class="stat-value">${stats.completedThisWeek}<span class="stat-unit">/ 5</span></div>
+        <div class="stat-sub">ימי אימון שבוצעו</div>
+      </div>
+      <div class="stat accent">
+        <div class="stat-label">רצף</div>
+        <div class="stat-value">${stats.streak}<span class="stat-unit">ימים</span></div>
+        <div class="stat-sub">אימונים רצופים</div>
+      </div>
+      <div class="stat treadmill">
+        <div class="stat-label">הליכון השבוע</div>
+        <div class="stat-value">${stats.treadmillKm}<span class="stat-unit">ק״מ</span></div>
+        <div class="stat-sub">${stats.treadmillMinutes} דקות הליכה</div>
+      </div>
+      <div class="stat gold">
+        <div class="stat-label">סה״כ</div>
+        <div class="stat-value">${stats.totalDone}</div>
+        <div class="stat-sub">אימונים בוצעו</div>
+      </div>
+    </section>
+
+    <section class="week-progress">
+      <div class="week-title">השבוע שלך במבט מהיר</div>
+      <div class="week-grid">
+        ${weekDates.map((date, idx) => {
+          const dayOfWeek = idx;
+          const isRest = dayOfWeek === 5 || dayOfWeek === 6;
+          const done = isWorkoutDone(date);
+          const isToday = date === todayDate;
+          const isViewing = date === viewingDate;
+          let cls = 'day-cell';
+          if (isRest) cls += ' rest';
+          if (done) cls += ' done';
+          if (isViewing && !isRest) cls += ' active';
+          const dNum = new Date(date).getDate();
+          return `
+            <div class="${cls}" ${!isRest ? `onclick="selectDay('${date}')"` : ''}>
+              <div class="day-name">${HEBREW_DAYS_SHORT[dayOfWeek]}</div>
+              <div class="day-num">${dNum}</div>
+              <div class="day-status">${isRest ? 'מנוחה' : done ? '✓ בוצע' : isToday ? 'היום' : ''}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </section>
+
+    ${workout.rest ? renderRestDay(workout) : renderWorkoutDay(workout, viewingDate)}
+
+    ${!workout.rest ? `
+      <div class="notes-section">
+        <div class="notes-title">
+          <span class="icon">📝</span>
+          <span>הערות אישיות ליום זה</span>
+        </div>
+        <textarea class="notes-input"
+                  id="notes-input"
+                  placeholder="איך הרגשת היום? מה היה קשה? מה היה קל? רשום כאן כל מחשבה או תובנה..."
+                  oninput="handleNoteInput('${viewingDate}')"
+                  onblur="saveNote('${viewingDate}')">${currentNote}</textarea>
+        <div class="notes-status" id="notes-status"></div>
+      </div>
+    ` : ''}
+  `;
+}
+
+function renderProgressView() {
+  const metric = state.progressMetric || 'km';
+  const weekHistory = calcWeekHistory(8); // last 8 weeks
+  const notes = Object.entries(state.notes)
+    .filter(([k, v]) => v && v.trim())
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .slice(0, 10);
+
+  const totalKm = weekHistory.reduce((sum, w) => sum + w.km, 0).toFixed(1);
+  const totalWorkouts = weekHistory.reduce((sum, w) => sum + w.workouts, 0);
+  const avgWorkoutsPerWeek = weekHistory.filter(w => w.workouts > 0).length > 0
+    ? (totalWorkouts / weekHistory.filter(w => w.workouts > 0).length).toFixed(1)
+    : '0';
+  const stats = calcStats();
+
+  return `
+    <div class="progress-section">
+      <div class="progress-header">
+        <div>
+          <div class="progress-title">התקדמות לאורך זמן</div>
+          <div style="color: var(--muted); font-size: 14px; margin-top: 4px;">8 השבועות האחרונים</div>
+        </div>
+        <div class="progress-toggle">
+          <button class="${metric === 'km' ? 'active' : ''}" onclick="setProgressMetric('km')">ק״מ הליכון</button>
+          <button class="${metric === 'workouts' ? 'active' : ''}" onclick="setProgressMetric('workouts')">אימונים</button>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        ${renderChart(weekHistory, metric)}
+      </div>
+
+      <div class="progress-summary">
+        <div class="summary-item">
+          <div class="summary-value">${totalKm}</div>
+          <div class="summary-label">ק״מ ב-8 שבועות</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value">${totalWorkouts}</div>
+          <div class="summary-label">אימונים ב-8 שבועות</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value">${avgWorkoutsPerWeek}</div>
+          <div class="summary-label">ממוצע אימונים לשבוע</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value">${stats.streak}</div>
+          <div class="summary-label">רצף נוכחי (ימים)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-title" style="margin-bottom: 16px;">הערות אחרונות</div>
+      ${notes.length === 0 ? `
+        <div class="history-empty">
+          עדיין לא כתבת הערות. הערות שתכתוב במסך "אימון היום" יופיעו כאן.
+        </div>
+      ` : `
+        <div class="history-list">
+          ${notes.map(([date, text]) => `
+            <div class="history-entry">
+              <div class="history-date">${formatDateHebrew(date)}</div>
+              <div class="history-note">${escapeHtml(text)}</div>
+            </div>
+          `).join('')}
+        </div>
+      `}
+    </div>
+  `;
+}
+
+function renderSettingsView() {
+  const reminder = state.reminder || { enabled: false, time: '08:00' };
+  const permission = typeof Notification !== 'undefined' ? Notification.permission : 'default';
+  let permText = '';
+  let permClass = 'prompt';
+  if (permission === 'granted') {
+    permText = '✓ התראות מופעלות בדפדפן';
+    permClass = 'granted';
+  } else if (permission === 'denied') {
+    permText = '✕ התראות חסומות בדפדפן. שנה בהגדרות הדפדפן כדי לאפשר.';
+    permClass = 'denied';
+  } else {
+    permText = 'כדי לקבל תזכורות, תצטרך לאשר התראות בחלון שיופיע.';
+  }
+
+  return `
+    <div class="settings-section">
+      <div class="settings-title">תזכורות אימון</div>
+      <div class="settings-desc">
+        קבע שעה קבועה לתזכורת יומית. בימי אימון (ראשון-חמישי) תקבל הודעה בדפדפן בזמן שהגדרת.
+      </div>
+
+      <div class="setting-row" style="border-top: none; padding-top: 0;">
+        <div>
+          <div class="setting-label">הפעל תזכורות</div>
+          <div class="setting-desc">התראה יומית לאימון (ראשון עד חמישי)</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" ${reminder.enabled ? 'checked' : ''} onchange="toggleReminder(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">שעת התזכורת</div>
+          <div class="setting-desc">באיזו שעה להזכיר לך להתאמן</div>
+        </div>
+        <input type="time" class="time-input" value="${reminder.time}" onchange="setReminderTime(this.value)">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">בדיקת התראה</div>
+          <div class="setting-desc">שלח לעצמך התראה עכשיו כדי לוודא שזה עובד</div>
+        </div>
+        <button class="test-btn" onclick="testNotification()">שלח התראה עכשיו</button>
+      </div>
+
+      <div class="perm-status ${permClass}">${permText}</div>
+
+      <div style="background: var(--cream-dark); padding: 14px 18px; border-radius: 10px; margin-top: 20px; font-size: 13px; line-height: 1.6; color: var(--muted);">
+        <strong style="color: var(--ink);">שים לב:</strong> תזכורות עובדות רק כשהאפליקציה פתוחה בדפדפן. לתזכורות אמיתיות גם כשסגור, תצטרך אפליקציית טלפון ייעודית.
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-title">על האפליקציה</div>
+      <div class="settings-desc">
+        אפליקציה זו מיועדת לאימונים ביתיים בגיל 60+. התרגילים נבחרו בקפידה להיות בטוחים, אפקטיביים וללא צורך בציוד מיוחד (מלבד הליכון).
+      </div>
+      <div class="setting-row" style="border-top: 1px solid var(--line);">
+        <div>
+          <div class="setting-label">ייעוץ רפואי</div>
+          <div class="setting-desc">לפני התחלת כל תוכנית חדשה — בדוק עם רופא המשפחה</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderRestDay(workout) {
+  return `
+    <div class="rest-view">
+      <div class="rest-icon">🌿</div>
+      <div class="rest-title">${workout.title} — יום מנוחה</div>
+      <div class="rest-body">
+        ${workout.note}.<br>
+        המנוחה חשובה לא פחות מהאימון — בה הגוף בונה את עצמו חזק יותר.
+        השתדל לישון היטב, לשתות מים, ולעשות הליכה קלה אם מתחשק.
+      </div>
+    </div>
+  `;
+}
+
+function renderWorkoutDay(workout, date) {
+  const doneIndexes = getExerciseCompletions(date);
+  const allDone = doneIndexes.length === workout.exercises.length;
+  const workoutCompleted = isWorkoutDone(date);
+
+  return `
+    <div class="workout-header">
+      <div class="workout-title-wrap">
+        <div class="workout-eyebrow">${workout.eyebrow}</div>
+        <div class="workout-title">${workout.title}</div>
+      </div>
+      <div class="workout-meta">
+        <div>משך: <strong>${workout.duration}</strong></div>
+        <div>עצימות: <strong>${workout.intensity}</strong></div>
+      </div>
+    </div>
+
+    <div class="tips">
+      <div class="tips-title">💡 טיפ לאימון</div>
+      <div class="tips-body">${workout.tip}</div>
+    </div>
+
+    <div class="exercise-table">
+      <div class="table-head">
+        <div>#</div>
+        <div>תרגיל</div>
+        <div>סטים</div>
+        <div>חזרות / זמן</div>
+        <div style="text-align:center">הדגמה</div>
+        <div style="text-align:center">בוצע</div>
+      </div>
+      ${workout.exercises.map((ex, i) => {
+        const checked = doneIndexes.includes(i);
+        const tm = ex.treadmill;
+        const treadmillBadge = tm ? `
+          <div class="treadmill-badge">
+            <svg viewBox="0 0 24 24"><path d="M4 18V6h2v12H4zm4-2V8c0-.55.45-1 1-1h11c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1H9c-.55 0-1-.45-1-1zm2-1h9V9h-9v6zM4 20h16v1H4z"/></svg>
+            הליכון · <span>${tm.speed}</span> קמ"ש · שיפוע <span>${tm.incline}%</span> · <span>${tm.minutes}</span> דק'
+          </div>
+        ` : '';
+        return `
+          <div class="table-row ${checked ? 'done' : ''}">
+            <div class="ex-num">${String(i+1).padStart(2,'0')}</div>
+            <div class="ex-name-wrap">
+              <div class="ex-name">${ex.name}</div>
+              <div class="ex-desc">${ex.desc}</div>
+              ${treadmillBadge}
+              <div class="ex-meta-mobile">
+                <span>${ex.sets} סטים</span>
+                <span>${ex.reps}</span>
+              </div>
+            </div>
+            <div class="ex-cell desktop-only">${ex.sets}</div>
+            <div class="ex-cell desktop-only">${ex.reps}</div>
+            <button class="demo-btn" onclick="showDemo('${encodeURIComponent(ex.demo || ex.name)}', '${ex.name.replace(/'/g, "\\'")}')"
+                    aria-label="צפה בהדגמה">
+              <svg viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+            <button class="check-btn ${checked ? 'checked' : ''}" onclick="toggleExercise('${date}', ${i})" aria-label="סמן כבוצע">
+              <svg viewBox="0 0 24 24">
+                <polyline points="5,12 10,17 19,7"></polyline>
+              </svg>
+            </button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <div class="complete-wrap">
+      <div class="complete-status">
+        ${doneIndexes.length} מתוך ${workout.exercises.length} תרגילים בוצעו
+      </div>
+      <button class="complete-btn ${workoutCompleted ? 'done' : ''}"
+              onclick="completeWorkout('${date}')"
+              ${!allDone && !workoutCompleted ? 'disabled' : ''}>
+        ${workoutCompleted ? '✓ האימון הושלם' : 'סיים את האימון'}
+      </button>
+    </div>
+  `;
+}
+
+// ============ ACTIONS ============
+function selectDay(date) {
+  state.viewingDate = date;
+  render();
+}
+
+async function toggleExercise(date, exIdx) {
+  if (!state.completions[date]) {
+    state.completions[date] = { exerciseIndexes: [], completed: false };
+  }
+  const arr = state.completions[date].exerciseIndexes;
+  const i = arr.indexOf(exIdx);
+  if (i >= 0) arr.splice(i, 1);
+  else arr.push(exIdx);
+  await saveState();
+  render();
+}
+
+async function completeWorkout(date) {
+  if (!state.completions[date]) {
+    state.completions[date] = { exerciseIndexes: [], completed: false };
+  }
+  state.completions[date].completed = !state.completions[date].completed;
+  await saveState();
+  render();
+}
+
+async function resetData() {
+  if (confirm('האם לאפס את כל הנתונים? פעולה זו בלתי הפיכה.')) {
+    state.completions = {};
+    state.notes = {};
+    await saveState();
+    render();
+  }
+}
+
+// View switching
+function switchView(view) {
+  state.currentView = view;
+  render();
+}
+
+function setProgressMetric(metric) {
+  state.progressMetric = metric;
+  render();
+}
+
+// Notes handling with debouncing
+let noteSaveTimer = null;
+function handleNoteInput(date) {
+  const input = document.getElementById('notes-input');
+  const status = document.getElementById('notes-status');
+  if (!input) return;
+
+  status.textContent = 'כותב...';
+  status.className = 'notes-status';
+
+  clearTimeout(noteSaveTimer);
+  noteSaveTimer = setTimeout(() => saveNote(date), 800);
+}
+
+async function saveNote(date) {
+  const input = document.getElementById('notes-input');
+  const status = document.getElementById('notes-status');
+  if (!input) return;
+
+  const value = input.value;
+  if (value && value.trim()) {
+    state.notes[date] = value;
+  } else {
+    delete state.notes[date];
+  }
+  await saveState();
+
+  if (status) {
+    status.textContent = '✓ נשמר';
+    status.className = 'notes-status saved';
+    setTimeout(() => {
+      if (status) { status.textContent = ''; status.className = 'notes-status'; }
+    }, 2000);
+  }
+}
+
+// Reminder handling
+async function toggleReminder(enabled) {
+  if (enabled && typeof Notification !== 'undefined' && Notification.permission === 'default') {
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') {
+      state.reminder.enabled = false;
+      await saveState();
+      render();
+      alert('לא ניתן לאישור התראות. ניתן לאפשר בהגדרות הדפדפן ולנסות שוב.');
+      return;
+    }
+  }
+  state.reminder.enabled = enabled;
+  await saveState();
+  scheduleReminder();
+  render();
+}
+
+async function setReminderTime(time) {
+  state.reminder.time = time;
+  await saveState();
+  scheduleReminder();
+}
+
+function testNotification() {
+  if (typeof Notification === 'undefined') {
+    alert('הדפדפן שלך לא תומך בהתראות.');
+    return;
+  }
+  if (Notification.permission === 'denied') {
+    alert('ההתראות חסומות בדפדפן. אפשר אותן בהגדרות הדפדפן.');
+    return;
+  }
+  if (Notification.permission === 'default') {
+    Notification.requestPermission().then(perm => {
+      if (perm === 'granted') showTestNotification();
+      render();
+    });
+    return;
+  }
+  showTestNotification();
+}
+
+function showTestNotification() {
+  try {
+    new Notification('🏋️ זמן להתאמן!', {
+      body: 'זה נראה כמו התראה אמיתית. ככה תראה התזכורת בזמן שקבעת.',
+      icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233d5a42"%3E%3Cpath d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/%3E%3C/svg%3E',
+    });
+  } catch (e) {
+    alert('לא ניתן להציג התראה: ' + e.message);
+  }
+}
+
+// Schedule the daily reminder
+let reminderTimeout = null;
+function scheduleReminder() {
+  if (reminderTimeout) clearTimeout(reminderTimeout);
+
+  const r = state.reminder;
+  if (!r || !r.enabled || typeof Notification === 'undefined') return;
+  if (Notification.permission !== 'granted') return;
+
+  const [hours, minutes] = r.time.split(':').map(Number);
+  const now = new Date();
+  const target = new Date();
+  target.setHours(hours, minutes, 0, 0);
+
+  // If time has passed today, schedule for tomorrow
+  if (target <= now) {
+    target.setDate(target.getDate() + 1);
+  }
+
+  // Don't schedule for Friday/Saturday (skip to Sunday)
+  const targetDow = target.getDay();
+  if (targetDow === 5) target.setDate(target.getDate() + 2);
+  else if (targetDow === 6) target.setDate(target.getDate() + 1);
+
+  const msUntil = target.getTime() - now.getTime();
+
+  // Don't schedule more than 24 hours out in a single setTimeout
+  if (msUntil > 24 * 60 * 60 * 1000) return;
+
+  reminderTimeout = setTimeout(() => {
+    try {
+      new Notification('🏋️ זמן להתאמן!', {
+        body: 'אל תשכח את האימון שלך היום. קדימה, גוף בריא זה הכי חשוב!',
+        icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233d5a42"%3E%3Cpath d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/%3E%3C/svg%3E',
+      });
+    } catch (e) {}
+    scheduleReminder(); // Re-schedule for next day
+  }, msUntil);
+}
+
+function showDemo(encodedQuery, exerciseName) {
+  const guide = EXERCISE_GUIDES[exerciseName] || DEFAULT_GUIDE;
+  const ytUrl = `https://www.youtube.com/results?search_query=${encodedQuery}`;
+
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+
+  modal.innerHTML = `
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()" aria-label="סגור">✕</button>
+      <div class="modal-hero">
+        <div class="modal-eyebrow">מדריך תרגיל</div>
+        <div class="modal-title">${exerciseName}</div>
+      </div>
+      <div class="modal-diagram">${guide.svg}</div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <div class="modal-section-title">
+            <span class="icon">📋</span>
+            <span>שלבי ביצוע</span>
+          </div>
+          <ol class="modal-steps">
+            ${guide.steps.map(s => `<li>${s}</li>`).join('')}
+          </ol>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-callout tip">
+            <span class="emoji">💡</span>
+            <div><strong>טיפ:</strong> ${guide.tip}</div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-callout warn">
+            <span class="emoji">⚠️</span>
+            <div><strong>זהירות:</strong> ${guide.warn}</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-youtube">
+        <button class="yt-btn" onclick="window.open('${ytUrl}', '_blank', 'noopener')">
+          <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
+          צפה בסרטוני הדגמה ביוטיוב
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const modal = document.querySelector('.modal-overlay');
+  if (modal) {
+    modal.remove();
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ============ INIT ============
+(async () => {
+  await loadState();
+  render();
+  scheduleReminder();
+
+  // Register service worker for offline support and "install to home screen"
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('service-worker.js');
+    } catch (e) {
+      console.log('Service worker registration deferred:', e.message);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
